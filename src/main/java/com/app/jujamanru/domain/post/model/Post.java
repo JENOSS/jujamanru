@@ -19,23 +19,28 @@ public class Post {
     private String title;
     private Long teamId;
     private Boolean isNotice;
+    private Boolean mustRead;
     @Column(columnDefinition="TEXT")
     private String text;
     private Integer viewCount;
+    private Integer replyCount;
     private String createdBy;
     private LocalDateTime createdDatetime;
     private LocalDateTime modifiedDatetime;
 
 
     @Builder
-    public Post(String title, Long teamId, Boolean isNotice, String text, Integer viewCount, String createdBy, LocalDateTime createdDatetime, Team team) {
+    public Post(String title, Long teamId, Boolean isNotice, Boolean mustRead,
+                String text, Integer viewCount, Integer replyCount, String createdBy, LocalDateTime createdDatetime) {
         this.title = title;
         this.text = text;
         this.isNotice = isNotice;
         this.viewCount = viewCount;
+        this.replyCount = replyCount;
         this.createdBy = createdBy;
         this.createdDatetime = createdDatetime;
         this.teamId = teamId;
+        this.mustRead = mustRead;
     }
 
     public Post changeTitle(String title) {
