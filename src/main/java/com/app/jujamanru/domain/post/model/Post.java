@@ -23,7 +23,6 @@ public class Post {
     @Column(columnDefinition="TEXT")
     private String text;
     private Integer viewCount;
-    private Integer replyCount;
     private String createdBy;
     private LocalDateTime createdDatetime;
     private LocalDateTime modifiedDatetime;
@@ -31,12 +30,11 @@ public class Post {
 
     @Builder
     public Post(String title, Long teamId, Boolean isNotice, Boolean mustRead,
-                String text, Integer viewCount, Integer replyCount, String createdBy, LocalDateTime createdDatetime) {
+                String text, Integer viewCount,String createdBy, LocalDateTime createdDatetime) {
         this.title = title;
         this.text = text;
         this.isNotice = isNotice;
         this.viewCount = viewCount;
-        this.replyCount = replyCount;
         this.createdBy = createdBy;
         this.createdDatetime = createdDatetime;
         this.teamId = teamId;
@@ -51,6 +49,24 @@ public class Post {
 
     public Post changeText(String text) {
         this.text = text;
+        this.modifiedDatetime = LocalDateTime.now();
+        return this;
+    }
+
+    public Post changeIsNotice(Boolean isNotice) {
+        this.isNotice = isNotice;
+        this.modifiedDatetime = LocalDateTime.now();
+        return this;
+    }
+
+    public Post changeMustRead(Boolean mustRead) {
+        this.mustRead = mustRead;
+        this.modifiedDatetime = LocalDateTime.now();
+        return this;
+    }
+
+    public Post changeTeamId(Long teamId) {
+        this.teamId = teamId;
         this.modifiedDatetime = LocalDateTime.now();
         return this;
     }

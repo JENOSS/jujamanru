@@ -7,6 +7,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,6 +18,7 @@ import java.util.Objects;
 
 import static com.app.jujamanru.domain.post.model.QPost.post;
 import static com.app.jujamanru.domain.post.model.QScrap.scrap;
+import static com.app.jujamanru.domain.reply.model.QReply.reply;
 import static com.app.jujamanru.domain.team.model.QTeam.team;
 
 @Repository
@@ -32,14 +34,16 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
         var pageRequest = PageRequest.of(request.getPage(), request.getSize());
         var result = queryFactory
                 .from(post)
-                .join(team).on(post.teamId.eq(team.id))
+                .leftJoin(team).on(post.teamId.eq(team.id))
                 .select(Projections.constructor(PostListItemDto.class,
                                 post.id,
                                 post.title,
                                 ExpressionUtils.as(team.id, "teamId"),
                                 ExpressionUtils.as(team.name, "teamName"),
                                 post.viewCount,
-                                post.replyCount,
+                                ExpressionUtils.as(JPAExpressions.select(reply.count())
+                                                 .from(reply)
+                                                 .where(reply.postId.eq(post.id)), "replyCount"),
                                 post.createdBy,
                                 new CaseBuilder().when(post.modifiedDatetime.isNotNull())
                                                  .then(post.modifiedDatetime)
@@ -60,12 +64,12 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             booleanBuilder.and(post.teamId.eq(request.getTeamId()));
         }
 
-        if (Objects.nonNull(request.getIsNotice())) {
-            booleanBuilder.and(post.isNotice.eq(request.getIsNotice()));
+        if (Objects.nonNull(request.getIsNotice()) && request.getIsNotice()) {
+            booleanBuilder.and(post.isNotice.eq(true));
         }
 
-        if (Objects.nonNull(request.getMustRead())) {
-            booleanBuilder.and(post.mustRead.eq(request.getMustRead()));
+        if (Objects.nonNull(request.getMustRead()) && request.getMustRead()) {
+            booleanBuilder.and(post.mustRead.eq(true));
         }
 
         if (Objects.nonNull(request.getUserId())) {
@@ -81,14 +85,16 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
         var result = queryFactory
                 .from(scrap)
                 .join(post).on(post.id.eq(scrap.postId))
-                .join(team).on(post.teamId.eq(team.id))
+                .leftJoin(team).on(post.teamId.eq(team.id))
                 .select(Projections.constructor(PostListItemDto.class,
                         post.id,
                         post.title,
                         ExpressionUtils.as(team.id, "teamId"),
                         ExpressionUtils.as(team.name, "teamName"),
                         post.viewCount,
-                        post.replyCount,
+                        ExpressionUtils.as(JPAExpressions.select(reply.count())
+                                    .from(reply)
+                                    .where(reply.postId.eq(post.id)), "replyCount"),
                         post.createdBy,
                         new CaseBuilder().when(post.modifiedDatetime.isNotNull())
                                 .then(post.modifiedDatetime)

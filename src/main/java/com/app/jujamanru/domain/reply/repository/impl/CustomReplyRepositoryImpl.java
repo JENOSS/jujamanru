@@ -36,12 +36,9 @@ public class CustomReplyRepositoryImpl implements CustomReplyRepository {
         var result = queryFactory
                 .from(reply)
                 .join(post).on(reply.postId.eq(post.id))
-                .join(team).on(post.teamId.eq(team.id))
                 .select(Projections.constructor(ReplyDto.class,
                         reply.id,
                         reply.postId,
-                        team.id,
-                        team.name,
                         reply.text,
                         reply.createdBy,
                         new CaseBuilder().when(post.modifiedDatetime.isNotNull())

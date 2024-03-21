@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 
 public record ReplyDto(Long id,
                        Long postId,
-                       Long teamId,
-                       String teamName,
                        String text,
                        String createdBy,
                        LocalDateTime modifiedDatetime,
@@ -21,7 +19,9 @@ public record ReplyDto(Long id,
 
     public String getTimeView() {
         return modifiedDatetime.toLocalDate().isEqual(LocalDate.now())
-                ? modifiedDatetime.toLocalTime().getHour() + ":" + modifiedDatetime.toLocalTime().getMinute()
-                : modifiedDatetime.toLocalDate().toString();
+                ? (modifiedDatetime.toLocalTime().getHour() > 9 ? "" : "0") + modifiedDatetime.toLocalTime().getHour()
+                + ":"
+                + (modifiedDatetime.toLocalTime().getMinute() > 9 ? "" : "0") + modifiedDatetime.toLocalTime().getMinute()
+                : modifiedDatetime.toLocalDate().toString().substring(5).replace("-", ".");
     }
 }

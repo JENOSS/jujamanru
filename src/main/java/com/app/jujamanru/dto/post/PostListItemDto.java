@@ -12,7 +12,7 @@ public record PostListItemDto(Long id,
                               Long teamId,
                               String teamName,
                               Integer viewCount,
-                              Integer replyCount,
+                              Long replyCount,
                               String createdBy,
                               LocalDateTime modifiedDatetime,
                               Boolean isNotice,
@@ -25,7 +25,9 @@ public record PostListItemDto(Long id,
 
     public String getTimeView() {
         return modifiedDatetime.toLocalDate().isEqual(LocalDate.now())
-                ? modifiedDatetime.toLocalTime().getHour() + ":" + modifiedDatetime.toLocalTime().getMinute()
-                : modifiedDatetime.toLocalDate().toString();
+                ? (modifiedDatetime.toLocalTime().getHour() > 9 ? "" : "0") + modifiedDatetime.toLocalTime().getHour()
+                + ":"
+                + (modifiedDatetime.toLocalTime().getMinute() > 9 ? "" : "0") + modifiedDatetime.toLocalTime().getMinute()
+                : modifiedDatetime.toLocalDate().toString().substring(5).replace("-", ".");
     }
 }
