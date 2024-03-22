@@ -1,14 +1,13 @@
 package com.app.jujamanru.controller;
 
 import com.app.jujamanru.dto.reply.ReplyDto;
+import com.app.jujamanru.dto.reply.ReplySaveRequest;
 import com.app.jujamanru.dto.reply.ReplySearchRequest;
 import com.app.jujamanru.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/replies")
@@ -20,4 +19,21 @@ public class ReplyController {
     public ResponseEntity<Page<ReplyDto>> getReplies(ReplySearchRequest request) {
         return ResponseEntity.ok(replyService.getReplies(request));
     }
+
+    @PostMapping
+    public ResponseEntity<Long> save(ReplySaveRequest request) {
+        return ResponseEntity.ok(replyService.save(request));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Long> update(@PathVariable("id") Long id, ReplySaveRequest request) {
+        return ResponseEntity.ok(replyService.update(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+        replyService.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 public class PostConverter {
-    private PostSaveRequest origin;
+    private final PostSaveRequest origin;
 
     public Post convert() {
         return Post.builder()

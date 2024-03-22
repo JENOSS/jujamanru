@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ReplyUpdater {
-    private Reply origin;
-    private ReplySaveRequest request;
+    private final Reply origin;
+    private final ReplySaveRequest request;
 
     public Reply update() {
         return origin

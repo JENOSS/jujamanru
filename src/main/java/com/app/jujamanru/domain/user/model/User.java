@@ -27,11 +27,10 @@ public class User {
 
 
     @Builder
-    public User(String id, String nickName, Team team, LocalDateTime createdDatetime, Boolean isAdmin) {
+    public User(String id, String nickName, LocalDateTime createdDatetime, Boolean isAdmin) {
         this.id = id;
         this.nickName = nickName;
         this.createdDatetime = createdDatetime;
-        this.team = team;
         this.isAdmin = isAdmin;
     }
 

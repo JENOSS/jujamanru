@@ -71,4 +71,7 @@ public class Post {
         return this;
     }
 
+    public void updateViewCount() {
+        this.viewCount++;
+    }
 }
