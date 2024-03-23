@@ -21,12 +21,12 @@ public class ReplyController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> save(ReplySaveRequest request) {
+    public ResponseEntity<Long> save(@RequestBody ReplySaveRequest request) {
         return ResponseEntity.ok(replyService.save(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Long> update(@PathVariable("id") Long id, ReplySaveRequest request) {
+    public ResponseEntity<Long> update(@PathVariable("id") Long id,@RequestBody ReplySaveRequest request) {
         return ResponseEntity.ok(replyService.update(id, request));
     }
 

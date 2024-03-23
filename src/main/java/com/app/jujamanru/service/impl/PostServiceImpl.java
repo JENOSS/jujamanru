@@ -9,10 +9,7 @@ import com.app.jujamanru.domain.post.repository.PostRepository;
 import com.app.jujamanru.domain.post.repository.ScrapRepository;
 import com.app.jujamanru.domain.reply.repository.ReplyRepository;
 import com.app.jujamanru.domain.team.repository.TeamRepository;
-import com.app.jujamanru.dto.post.PostDto;
-import com.app.jujamanru.dto.post.PostListItemDto;
-import com.app.jujamanru.dto.post.PostSaveRequest;
-import com.app.jujamanru.dto.post.PostSearchRequest;
+import com.app.jujamanru.dto.post.*;
 import com.app.jujamanru.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -49,7 +46,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<PostListItemDto> getScraps(PostSearchRequest postSearchRequest) {
+    public Page<ScrapListItemDto> getScraps(PostSearchRequest postSearchRequest) {
         return postRepository.findScrapPageBySearch(postSearchRequest);
     }
 
@@ -88,8 +85,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Long scrapSave(String userId, Long postId) {
-        return scrapRepository.save(new Scrap(postId, userId)).getId();
+    public Long scrapSave(ScrapSaveRequest request) {
+        return scrapRepository.save(new Scrap(request.getPostId(), request.getUserId())).getId();
     }
 
     @Override

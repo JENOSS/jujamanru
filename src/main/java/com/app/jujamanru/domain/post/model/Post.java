@@ -42,7 +42,7 @@ public class Post {
     }
 
     public Post changeTitle(String title) {
-        this.text = title;
+        this.title = title;
         this.modifiedDatetime = LocalDateTime.now();
         return this;
     }

@@ -41,10 +41,10 @@ public class CustomReplyRepositoryImpl implements CustomReplyRepository {
                         reply.postId,
                         reply.text,
                         reply.createdBy,
-                        new CaseBuilder().when(post.modifiedDatetime.isNotNull())
-                                .then(post.modifiedDatetime)
-                                .otherwise(post.createdDatetime),
-                        new CaseBuilder().when(post.modifiedDatetime.isNotNull())
+                        new CaseBuilder().when(reply.modifiedDatetime.isNotNull())
+                                .then(reply.modifiedDatetime)
+                                .otherwise(reply.createdDatetime),
+                        new CaseBuilder().when(reply.modifiedDatetime.isNotNull())
                                 .then(true)
                                 .otherwise(false)))
                 .where(this.getSearchPredicate(request))

@@ -3,6 +3,7 @@ package com.app.jujamanru.domain.post.repository.impl;
 import com.app.jujamanru.domain.post.repository.CustomPostRepository;
 import com.app.jujamanru.dto.post.PostListItemDto;
 import com.app.jujamanru.dto.post.PostSearchRequest;
+import com.app.jujamanru.dto.post.ScrapListItemDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
@@ -80,13 +81,14 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     }
 
     @Override
-    public Page<PostListItemDto> findScrapPageBySearch(PostSearchRequest request) {
+    public Page<ScrapListItemDto> findScrapPageBySearch(PostSearchRequest request) {
         var pageRequest = PageRequest.of(request.getPage(), request.getSize());
         var result = queryFactory
                 .from(scrap)
                 .join(post).on(post.id.eq(scrap.postId))
                 .leftJoin(team).on(post.teamId.eq(team.id))
-                .select(Projections.constructor(PostListItemDto.class,
+                .select(Projections.constructor(ScrapListItemDto.class,
+                        scrap.id,
                         post.id,
                         post.title,
                         ExpressionUtils.as(team.id, "teamId"),
@@ -102,7 +104,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                         post.isNotice,
                         post.mustRead))
                 .where(scrap.userId.eq(request.getUserId()))
-                .orderBy(post.id.desc())
+                .orderBy(scrap.id.desc())
                 .limit(request.getSize()).offset((long)request.getPage() * (long)request.getSize())
                 .fetchResults();
         return new PageImpl(result.getResults(), pageRequest, result.getTotal());

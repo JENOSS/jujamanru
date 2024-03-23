@@ -1,9 +1,6 @@
 package com.app.jujamanru.controller;
 
-import com.app.jujamanru.dto.post.PostDto;
-import com.app.jujamanru.dto.post.PostListItemDto;
-import com.app.jujamanru.dto.post.PostSaveRequest;
-import com.app.jujamanru.dto.post.PostSearchRequest;
+import com.app.jujamanru.dto.post.*;
 import com.app.jujamanru.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,17 +26,17 @@ public class PostController {
     }
 
     @GetMapping("/scraps")
-    public ResponseEntity<Page<PostListItemDto>> getScraps(PostSearchRequest request) {
+    public ResponseEntity<Page<ScrapListItemDto>> getScraps(PostSearchRequest request) {
         return ResponseEntity.ok(postService.getScraps(request));
     }
 
     @PostMapping
-    public ResponseEntity<Long> save(PostSaveRequest request) {
+    public ResponseEntity<Long> save(@RequestBody PostSaveRequest request) {
         return ResponseEntity.ok(postService.save(request));
     }
 
     @PutMapping("/{postId}")
-    public ResponseEntity<Long> update(@PathVariable("postId") Long postId, PostSaveRequest request) {
+    public ResponseEntity<Long> update(@PathVariable("postId") Long postId, @RequestBody PostSaveRequest request) {
         return ResponseEntity.ok(postService.update(postId, request));
     }
 
@@ -56,8 +53,8 @@ public class PostController {
     }
 
     @PostMapping("/scraps")
-    public ResponseEntity<Long> scrapSave(Long postId, String userId) {
-        return ResponseEntity.ok(postService.scrapSave(userId, postId));
+    public ResponseEntity<Long> scrapSave(@RequestBody ScrapSaveRequest request) {
+        return ResponseEntity.ok(postService.scrapSave(request));
     }
 
     @DeleteMapping("/scraps/{scrapId}")

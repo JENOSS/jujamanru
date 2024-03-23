@@ -1,9 +1,7 @@
 package com.app.jujamanru.service;
 
-import com.app.jujamanru.dto.post.PostDto;
-import com.app.jujamanru.dto.post.PostListItemDto;
-import com.app.jujamanru.dto.post.PostSaveRequest;
-import com.app.jujamanru.dto.post.PostSearchRequest;
+import com.app.jujamanru.domain.post.model.Scrap;
+import com.app.jujamanru.dto.post.*;
 import org.springframework.data.domain.Page;
 
 public interface PostService {
@@ -12,7 +10,7 @@ public interface PostService {
 
     PostDto getPost(Long postId);
 
-    Page<PostListItemDto> getScraps(PostSearchRequest postSearchRequest);
+    Page<ScrapListItemDto> getScraps(PostSearchRequest postSearchRequest);
 
     Long save(PostSaveRequest request);
 
@@ -22,7 +20,7 @@ public interface PostService {
 
     void updateViewCount(Long postId);
 
-    Long scrapSave(String userId, Long postId);
+    Long scrapSave(ScrapSaveRequest request);
 
     void deleteScrap(Long scrapId);
 
