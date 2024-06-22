@@ -18,7 +18,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     @Transactional(readOnly = true)
     public List<TeamDto> getTeams() {
-        return teamRepository.findAllByOrderByIdDesc().stream()
+        return teamRepository.findAllByOrderByIdAsc().stream()
                 .map(TeamDtoConverter::new)
                 .map(TeamDtoConverter::convert)
                 .toList();

@@ -8,7 +8,7 @@ public interface PostService {
 
     Page<PostListItemDto> getPosts(PostSearchRequest postSearchRequest);
 
-    PostDto getPost(Long postId);
+    PostDto getPost(Long postId, String userId);
 
     Page<ScrapListItemDto> getScraps(PostSearchRequest postSearchRequest);
 

@@ -48,7 +48,7 @@ public class CustomReplyRepositoryImpl implements CustomReplyRepository {
                                 .then(true)
                                 .otherwise(false)))
                 .where(this.getSearchPredicate(request))
-                .orderBy(reply.id.desc())
+                .orderBy(reply.id.asc())
                 .limit(request.getSize()).offset((long)request.getPage() * (long)request.getSize())
                 .fetchResults();
         return new PageImpl(result.getResults(), pageRequest, result.getTotal());

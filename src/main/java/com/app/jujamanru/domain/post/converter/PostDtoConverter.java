@@ -16,6 +16,7 @@ public class PostDtoConverter {
     private final Team team;
     private final Long replyCount;
     private final List<Reply> replies;
+    private final Long scrapId;
 
     public PostDto convert() {
         var teamId = Objects.isNull(team) ? null : team.getId();
@@ -23,6 +24,7 @@ public class PostDtoConverter {
 
         return PostDto.builder()
                 .id(origin.getId())
+                .scrapId(scrapId)
                 .title(origin.getTitle())
                 .text(origin.getText())
                 .teamId(teamId)

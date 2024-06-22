@@ -11,6 +11,7 @@ import com.app.jujamanru.domain.reply.repository.ReplyRepository;
 import com.app.jujamanru.domain.team.repository.TeamRepository;
 import com.app.jujamanru.dto.post.*;
 import com.app.jujamanru.service.PostService;
+import com.querydsl.core.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -34,14 +35,19 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
-    public PostDto getPost(Long postId) {
+    public PostDto getPost(Long postId, String userId) {
         var post = postRepository.findById(postId).orElseThrow();
         var team = Objects.nonNull(post.getTeamId())
                 ? teamRepository.findById(post.getTeamId()).orElseThrow()
                 : null;
         var replies = replyRepository.findTop10ByPostIdOrderByIdDesc(postId);
         var replyCount = replyRepository.countByPostId(postId);
-        return new PostDtoConverter(post, team, replyCount, replies).convert();
+        var scrapId = StringUtils.isNullOrEmpty(userId)
+                ? null
+                : scrapRepository.findByUserIdAndPostId(userId, postId)
+                                .map(Scrap::getId)
+                                .orElse(null);
+        return new PostDtoConverter(post, team, replyCount, replies, scrapId).convert();
     }
 
     @Override

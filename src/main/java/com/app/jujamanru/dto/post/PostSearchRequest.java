@@ -17,12 +17,15 @@ public class PostSearchRequest {
     private Integer page;
     private Integer size;
 
+    private Boolean isPopular;
+
     @Builder
     public PostSearchRequest(Long teamId, Boolean isNotice, String userId,
-                             Boolean mustRead, Integer page, Integer size) {
+                             Boolean mustRead, Boolean isPopular, Integer page, Integer size) {
         this.teamId = teamId;
         this.isNotice = Objects.requireNonNullElse(isNotice, false);
         this.mustRead = Objects.requireNonNullElse(mustRead, false);
+        this.isPopular = Objects.requireNonNullElse(isPopular, false);
         this.userId = userId;
         this.page = Objects.requireNonNullElse(page, 0);
         this.size = Objects.requireNonNullElse(size, 20);

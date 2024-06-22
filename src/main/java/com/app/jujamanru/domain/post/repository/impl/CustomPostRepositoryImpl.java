@@ -6,6 +6,7 @@ import com.app.jujamanru.dto.post.PostSearchRequest;
 import com.app.jujamanru.dto.post.ScrapListItemDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.JPAExpressions;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static com.app.jujamanru.domain.post.model.QPost.post;
@@ -52,7 +54,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                                 post.isNotice,
                                 post.mustRead))
                 .where(this.getSearchPredicate(request))
-                .orderBy(post.id.desc())
+                .orderBy(this.getOrderPredicate(request))
                 .limit(request.getSize()).offset((long)request.getPage() * (long)request.getSize())
                 .fetchResults();
         return new PageImpl(result.getResults(), pageRequest, result.getTotal());
@@ -77,7 +79,20 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             booleanBuilder.and(post.createdBy.eq(request.getUserId()));
         }
 
+        if (Objects.nonNull(request.getIsPopular()) && request.getIsPopular()) {
+            booleanBuilder.and(post.createdDatetime.goe(LocalDateTime.now().minusDays(2)));
+            booleanBuilder.and(post.isNotice.eq(false));
+        }
+
         return booleanBuilder;
+    }
+
+    private OrderSpecifier getOrderPredicate(PostSearchRequest request) {
+        if (Objects.nonNull(request.getIsPopular()) && request.getIsPopular()) {
+            return post.viewCount.desc();
+        }
+
+        return post.id.desc();
     }
 
     @Override
