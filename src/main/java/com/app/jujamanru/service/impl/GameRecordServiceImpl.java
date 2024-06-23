@@ -57,14 +57,17 @@ public class GameRecordServiceImpl implements GameRecordService {
     public GameRecordDto save(GameRecordSaveRequest saveRequest, List<MultipartFile> images) {
         var result = new GameRecordConverter(saveRequest).convert();
         var entity = gameRecordRepository.save(result);
-        for (int i = 0 ; i < images.size() ; i++) {
-            if (images.get(i).isEmpty()) continue;
-            var image = this.saveImage(saveRequest.getUserId(), entity.getId(), i, images.get(i));
-            var subEntity = GameRecordImage.builder()
-                    .gameRecordId(entity.getId())
-                    .image(image)
-                    .build();
-            gameRecordImageRepository.save(subEntity);
+
+        if (images != null) {
+            for (int i = 0 ; i < images.size() ; i++) {
+                if (images.get(i).isEmpty()) continue;
+                var image = this.saveImage(saveRequest.getUserId(), entity.getId(), i, images.get(i));
+                var subEntity = GameRecordImage.builder()
+                        .gameRecordId(entity.getId())
+                        .image(image)
+                        .build();
+                gameRecordImageRepository.save(subEntity);
+            }
         }
 
         return new GameRecordDtoConvert(entity ,null, null, List.of()).convert();

@@ -28,7 +28,7 @@ public class GameRecordController {
 
     @PostMapping
     private ResponseEntity<GameRecordDto> save(@RequestPart("saveRequest") GameRecordSaveRequest saveRequest,
-                                               @RequestPart("images") List<MultipartFile> images) {
+                                               @RequestPart(value = "images", required = false) List<MultipartFile> images) {
         return ResponseEntity.ok(gameRecordService.save(saveRequest, images));
     }
 
