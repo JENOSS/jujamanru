@@ -38,6 +38,7 @@ public class CustomGameRecordRepositoryImpl implements CustomGameRecordRepositor
                         team.name.as("myTeamName"),
                         gameRecord.opponentTeamId,
                         opponentTeam.name.as("opponentTeamName"),
+                        gameRecord.gameResult.stringValue(),
                         gameRecord.text,
                         gameRecord.createdBy,
                         gameRecord.createdDatetime,

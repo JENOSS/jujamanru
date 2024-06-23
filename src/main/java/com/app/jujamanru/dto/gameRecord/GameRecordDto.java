@@ -1,5 +1,6 @@
 package com.app.jujamanru.dto.gameRecord;
 
+import com.app.jujamanru.domain.gameRecord.model.GameResult;
 import lombok.Builder;
 import org.springframework.security.core.parameters.P;
 
@@ -13,6 +14,7 @@ public record GameRecordDto(Long id,
                             String myTeamName,
                             Long opponentTeamId,
                             String opponentTeamName,
+                            String gameResult,
                             String text,
                             String createdBy,
                             LocalDateTime createdDatetime,

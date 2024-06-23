@@ -22,6 +22,7 @@ public class GameRecordDtoConvert {
                 .myTeamName(myTeam != null ? myTeam.getName() : "")
                 .opponentTeamId(origin.getOpponentTeamId())
                 .opponentTeamName(opponentTeam != null ? opponentTeam.getName() : "")
+                .gameResult(origin.getGameResult().name())
                 .text(origin.getText())
                 .createdBy(origin.getCreatedBy())
                 .createdDatetime(origin.getCreatedDatetime())
